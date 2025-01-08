@@ -250,7 +250,6 @@ To run the package tests:
 ```bash
 composer test
 ```
-Here's the section to add to your README.md for sponsorship:
 
 <!-- ## Support Us 💖
 
@@ -277,7 +276,7 @@ Please see [CHANGELOG](CHANGELOG.md) for more information on what has changed re
 - Author: [Alvin Panford](https://github.com/AlvinCoded)
 - OpenAI PHP by [Nuno Maduro](https://github.com/openai-php/laravel)
 - Anthropic Laravel by [Mozex](https://github.com/mozex/anthropic-laravel)
-- **Gemini PHP** for Laravel by [Fatih AYDIN](https://github.com/aydinfatih/)
+- **Gemini PHP** for Laravel by [Fatih AYDIN](https://github.com/google-gemini-php/laravel)
 
 ## License 📄
 
