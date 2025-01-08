@@ -1,8 +1,8 @@
 # Laravel MTN MOMO AI 
 
-[![Latest Version on Packagist](https://img.shields.io/packagist/v/AlvinCoded/laravel-mtn-momo-ai.svg?style=flat-square)](https://packagist.org/packages/AlvinCoded/laravel-mtn-momo-ai)
-[![Total Downloads](https://img.shields.io/packagist/dt/AlvinCoded/laravel-mtn-momo-ai.svg?style=flat-square)](https://packagist.org/packages/AlvinCoded/laravel-mtn-momo-ai)
-[![License](https://img.shields.io/packagist/l/AlvinCoded/laravel-mtn-momo-ai.svg?style=flat-square)](https://packagist.org/packages/AlvinCoded/laravel-mtn-momo-ai)
+[![Latest Version on Packagist](https://img.shields.io/packagist/v/AlvinCoded/laravel-mtn-momo-ai.svg?style=flat-square)](https://packagist.org/packages/alvincoded/laravel-mtn-momo-ai)
+[![Total Downloads](https://img.shields.io/packagist/dt/AlvinCoded/laravel-mtn-momo-ai.svg?style=flat-square)](https://packagist.org/packages/alvincoded/laravel-mtn-momo-ai)
+[![License](https://img.shields.io/packagist/l/AlvinCoded/laravel-mtn-momo-ai.svg?style=flat-square)](https://packagist.org/packages/alvincoded/laravel-mtn-momo-ai)
 <!-- [![Sponsor](https://img.shields.io/static/v1?label=Sponsor&message=%E2%9D%A4&logo=GitHub&color=ff69b4)](https://github.com/sponsors/AlvinCoded) -->
 
 A powerful Laravel package that integrates MTN Mobile Money API with AI capabilities, providing intelligent transaction analysis, fraud detection, and more!
