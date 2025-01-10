@@ -26,4 +26,4 @@ jobs:
         run: composer install --prefer-dist --no-progress
 
       - name: Security Check
-        uses: symfonycorp/security-checker-action@v4
+        uses: symfonycorp/security-checker-action@v5
