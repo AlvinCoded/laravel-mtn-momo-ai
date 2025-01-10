@@ -1,13 +1,25 @@
 {
     "name": "alvincoded/laravel-mtn-momo-ai",
     "description": "A Laravel package for integrating MTN Mobile Money API with AI capabilities",
-    "keywords": ["laravel", "ai", "artificial intelligence", "gpt", "claude", "gemini", "MTN", "mobile-money", "api"],
+    "keywords": ["laravel", "ai", "artificial-intelligence", "gpt", "claude", "gemini", "MTN", "mobile-money", "api"],
     "type": "library",
     "license": "MIT",
     "authors": [
         {
             "name": "Alvin Panford",
-            "email": "panfordalvin@gmail.com"
+            "email": "panfordalvin@gmail.com",
+            "role": "Developer"
+        }
+    ],
+    "homepage": "https://github.com/alvincoded/laravel-mtn-momo-ai",
+    "support": {
+        "issues": "https://github.com/alvincoded/laravel-mtn-momo-ai/issues",
+        "source": "https://github.com/alvincoded/laravel-mtn-momo-ai"
+    },
+    "funding": [
+        {
+            "type": "github",
+            "url": "https://github.com/sponsors/alvincoded"
         }
     ],
     "require": {
@@ -22,7 +34,13 @@
     "require-dev": {
         "mockery/mockery": "^1.6",
         "orchestra/testbench": "^9.0|^10.0|^11.0",
-        "phpunit/phpunit": "^9.0|^10.0"
+        "phpunit/phpunit": "^9.0|^10.0",
+        "friendsofphp/php-cs-fixer": "^3.0",
+        "phpstan/phpstan": "^1.10",
+        "nunomaduro/larastan": "^2.0",
+        "symfony/var-dumper": "^6.0|^7.0",
+        "vimeo/psalm": "^5.0",
+        "rector/rector": "^0.19"
     },
     "autoload": {
         "psr-4": {
@@ -53,11 +71,40 @@
     "config": {
         "sort-packages": true,
         "allow-plugins": {
-            "php-http/discovery": true
+            "php-http/discovery": true,
+            "pestphp/pest-plugin": true
         }
     },
     "scripts": {
-        "test": "phpunit"
+        "post-autoload-dump": [
+            "@php ./vendor/bin/testbench package:discover --ansi"
+        ],
+        "analyse": "vendor/bin/phpstan analyse",
+        "baseline": "vendor/bin/phpstan analyse --generate-baseline",
+        "format": "vendor/bin/php-cs-fixer fix --allow-risky=yes",
+        "test": "vendor/bin/phpunit",
+        "test-coverage": "vendor/bin/phpunit --coverage-html coverage",
+        "psalm": "vendor/bin/psalm",
+        "rector": "vendor/bin/rector process",
+        "check-style": "vendor/bin/php-cs-fixer fix --dry-run --diff",
+        "fix-style": "vendor/bin/php-cs-fixer fix",
+        "clear": [
+            "@php vendor/bin/testbench package:purge-skeleton --ansi",
+            "rm -rf vendor",
+            "rm -rf composer.lock"
+        ]
+    },
+    "scripts-descriptions": {
+        "analyse": "Run static analysis",
+        "baseline": "Generate baseline for static analysis",
+        "format": "Format code using PHP CS Fixer",
+        "test": "Run PHPUnit tests",
+        "test-coverage": "Run PHPUnit tests with coverage report",
+        "psalm": "Run Psalm static analysis",
+        "rector": "Run Rector to upgrade code",
+        "check-style": "Check code style",
+        "fix-style": "Fix code style",
+        "clear": "Clear all generated files"
     },
     "minimum-stability": "dev",
     "prefer-stable": true
