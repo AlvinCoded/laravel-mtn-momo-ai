@@ -6,7 +6,7 @@
 [![Code Style](https://github.com/alvincoded/laravel-mtn-momo-ai/actions/workflows/php-cs-fixer.yml/badge.svg)](https://github.com/alvincoded/laravel-mtn-momo-ai/actions/workflows/php-cs-fixer.yml)
 [![Static Analysis](https://github.com/alvincoded/laravel-mtn-momo-ai/actions/workflows/static-analysis.yml/badge.svg)](https://github.com/alvincoded/laravel-mtn-momo-ai/actions/workflows/static-analysis.yml)
 [![Security](https://github.com/alvincoded/laravel-mtn-momo-ai/actions/workflows/security.yml/badge.svg)](https://github.com/alvincoded/laravel-mtn-momo-ai/actions/workflows/security.yml)
-[![codecov](https://codecov.io/gh/alvincoded/laravel-mtn-momo-ai/branch/main/graph/badge.svg)](https://codecov.io/gh/alvincoded/laravel-mtn-momo-ai)
+[![codecov](https://codecov.io/gh/alvincoded/laravel-mtn-momo-ai/graph/badge.svg?token=D0X6XJZCQR)](https://codecov.io/gh/alvincoded/laravel-mtn-momo-ai)
 <!-- [![Sponsor](https://img.shields.io/static/v1?label=Sponsor&message=%E2%9D%A4&logo=GitHub&color=ff69b4)](https://github.com/sponsors/AlvinCoded) -->
 
 A powerful Laravel package that integrates [MTN Mobile Money API](https://momodeveloper.mtn.com/) with AI capabilities, providing intelligent transaction analysis, fraud detection, and more!
@@ -270,7 +270,7 @@ Contributions are welcome! Please see [CONTRIBUTING.md](CONTRIBUTING.md) for det
 
 ## Security 🔒
 
-Please see [SECURITY.md](SECURITY.md) for details.
+Please review [our security policy](../../security/policy) on how to report security vulnerabilities.
 
 ## Changelog
 
