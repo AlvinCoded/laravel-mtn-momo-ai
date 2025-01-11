@@ -1,11 +1,14 @@
 # Laravel MTN MOMO AI 
 
-[![Latest Version on Packagist](https://img.shields.io/packagist/v/AlvinCoded/laravel-mtn-momo-ai.svg?style=flat-square)](https://packagist.org/packages/alvincoded/laravel-mtn-momo-ai)
-[![Total Downloads](https://img.shields.io/packagist/dt/AlvinCoded/laravel-mtn-momo-ai.svg?style=flat-square)](https://packagist.org/packages/alvincoded/laravel-mtn-momo-ai)
-[![License](https://img.shields.io/packagist/l/AlvinCoded/laravel-mtn-momo-ai.svg?style=flat-square)](https://packagist.org/packages/alvincoded/laravel-mtn-momo-ai)
+[![Latest Version on Packagist](https://img.shields.io/packagist/v/alvincoded/laravel-mtn-momo-ai.svg?style=flat-square)](https://packagist.org/packages/alvincoded/laravel-mtn-momo-ai)
+[![Total Downloads](https://img.shields.io/packagist/dt/alvincoded/laravel-mtn-momo-ai.svg?style=flat-square)](https://packagist.org/packages/alvincoded/laravel-mtn-momo-ai)
+[![Tests](https://github.com/alvincoded/laravel-mtn-momo-ai/actions/workflows/tests.yml/badge.svg)](https://github.com/alvincoded/laravel-mtn-momo-ai/actions/workflows/tests.yml)
+[![Code Style](https://github.com/alvincoded/laravel-mtn-momo-ai/actions/workflows/php-cs-fixer.yml/badge.svg)](https://github.com/alvincoded/laravel-mtn-momo-ai/actions/workflows/php-cs-fixer.yml)
+[![Security](https://github.com/alvincoded/laravel-mtn-momo-ai/actions/workflows/security.yml/badge.svg)](https://github.com/alvincoded/laravel-mtn-momo-ai/actions/workflows/security.yml)
+<!-- [![codecov](https://codecov.io/gh/alvincoded/laravel-mtn-momo-ai/graph/badge.svg?token=D0X6XJZCQR)](https://codecov.io/gh/alvincoded/laravel-mtn-momo-ai) -->
 <!-- [![Sponsor](https://img.shields.io/static/v1?label=Sponsor&message=%E2%9D%A4&logo=GitHub&color=ff69b4)](https://github.com/sponsors/AlvinCoded) -->
 
-A powerful Laravel package that integrates MTN Mobile Money API with AI capabilities, providing intelligent transaction analysis, fraud detection, and more!
+A powerful Laravel package that integrates [MTN Mobile Money API](https://momodeveloper.mtn.com/) with AI capabilities, providing intelligent transaction analysis, fraud detection, and more!
 
 ## Features 🌟
 
@@ -20,7 +23,7 @@ A powerful Laravel package that integrates MTN Mobile Money API with AI capabili
 - 🚨 Anomaly detection in transactions
 - 🔧 API call optimization
 
-## Prerequisites 🔑
+## Prerequisites
 
 Before getting started with the MTN MOMO AI package, you'll need:
 
@@ -88,12 +91,13 @@ Key configurations include:
 
 ```bash
 # MTN MOMO API Configuration
-MTN_MOMO_API_USER=your_api_user
+MTN_MOMO_API_USER=your_api_user_id # Randomly generated UUID
 MTN_MOMO_API_KEY=your_api_key
 MTN_MOMO_SUBSCRIPTION_KEY=your_subscription_key
+MTN_MOMO_PROVIDER_CALLBACK_HOST=http://localhost
 MTN_MOMO_BASE_URL=https://sandbox.momodeveloper.mtn.com
 MTN_MOMO_ENVIRONMENT=sandbox
-MTN_MOMO_DEFAULT_CURRENCY=USD
+MTN_MOMO_DEFAULT_CURRENCY=EUR
 
 # AI Model API Keys
 OPENAI_API_KEY=your_openai_key
@@ -120,13 +124,13 @@ use AlvinCoded\MtnMomoAi\Facades\MtnMomoAi;
 $analysis = MtnMomoAi::analyzeTransaction('transaction123');
 
 // Request to pay
-$result = MtnMomoAi::requestToPay(100, 'GHS', 'ext123', 'party123', 'Payment', 'Note');
+$result = MtnMomoAi::requestToPay(100, 'EUR', 'ext123', 'party123', 'Payment', 'Note');
 
 // Transfer (Disbursement)
-$result = MtnMomoAi::transfer(100, 'GHS', 'ext123', 'party123', 'Payment', 'Note');
+$result = MtnMomoAi::transfer(100, 'EUR', 'ext123', 'party123', 'Payment', 'Note');
 
 // Remittance
-$result = MtnMomoAi::remit(100, 'GHS', 'ext123', 'party123', 'Payment', 'Note');
+$result = MtnMomoAi::remit(100, 'EUR', 'ext123', 'party123', 'Payment', 'Note');
 ```
 
 ### AI-Enhanced Features
@@ -139,7 +143,7 @@ $fraudAnalysis = MtnMomoAi::detectFraud($transactionData);
 $forecast = MtnMomoAi::forecastCashFlow('1month');
 
 // Parse natural language command
-$result = MtnMomoAi::parseNaturalLanguageCommand('Send 100 GHS to John Doe');
+$result = MtnMomoAi::parseNaturalLanguageCommand('Send 100 EUR to John Doe');
 
 // Generate report
 $report = MtnMomoAi::generateReport($startDate, $endDate);
@@ -155,7 +159,7 @@ $anomalies = MtnMomoAi::monitorTransactions();
 MtnMomoAi::scheduleDisbursement(100, 'recipient123');
 
 // Specifying a different currency
-MtnMomoAi::scheduleDisbursement(100, 'recipient123', 'GHS');
+MtnMomoAi::scheduleDisbursement(100, 'recipient123', 'EUR');
 ```
 
 ### Transaction Analysis
@@ -168,7 +172,7 @@ $analysis = MtnMomoAi::analyzeTransaction('transaction123');
 // Fraud detection with custom parameters
 $fraudAnalysis = MtnMomoAi::detectFraud([
     'amount' => 1000,
-    'currency' => 'GHS',
+    'currency' => 'EUR',
     'recipient' => 'user123',
     'timestamp' => now(),
     'location' => 'GH'
@@ -182,7 +186,7 @@ $fraudAnalysis = MtnMomoAi::detectFraud([
 $retryResult = MtnMomoAi::smartRetry([
     'product' => 'collection',
     'amount' => 100,
-    'currency' => 'GHS',
+    'currency' => 'EUR',
     'externalId' => 'ext123',
     'partyId' => 'party123',
     'payerMessage' => 'Payment',
@@ -196,7 +200,7 @@ The package includes comprehensive error handling:
 
 ```php
 try {
-    $result = MtnMomoAi::requestToPay(100, 'GHS', 'ext123', 'party123', 'Payment', 'Note');
+    $result = MtnMomoAi::requestToPay(100, 'EUR', 'ext123', 'party123', 'Payment', 'Note');
 } catch (\AlvinCoded\MtnMomoAi\Exceptions\MtnMomoApiException $e) {
     // Handle API-specific errors
     $errorDetails = $e->getResponseBody();
@@ -265,15 +269,13 @@ Contributions are welcome! Please see [CONTRIBUTING.md](CONTRIBUTING.md) for det
 
 ## Security 🔒
 
-If you discover any security-related issues, don't hesitate to use the issue tracker.
+Please review [our security policy](../../security/policy) on how to report security vulnerabilities.
 
 ## Changelog
 
 Please see [CHANGELOG](CHANGELOG.md) for more information on what has changed recently.
 
 ## Credits 👏
-
-- Author: [Alvin Panford](https://github.com/AlvinCoded)
 - OpenAI PHP by [Nuno Maduro](https://github.com/openai-php/laravel)
 - Anthropic Laravel by [Mozex](https://github.com/mozex/anthropic-laravel)
 - **Gemini PHP** for Laravel by [Fatih AYDIN](https://github.com/google-gemini-php/laravel)
