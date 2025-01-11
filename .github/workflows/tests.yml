@@ -52,3 +52,10 @@ jobs:
 
     - name: Integration Tests
       run: php ./vendor/bin/pest
+
+    - name: Run tests and collect coverage
+      run: vendor/bin/phpunit --coverage-clover coverage.xml .
+    - name: Upload coverage reports to Codecov
+      uses: codecov/codecov-action@v5
+      with:
+        token: ${{ secrets.CODECOV_TOKEN }}
