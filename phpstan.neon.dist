@@ -5,8 +5,6 @@ parameters:
         - tests
     excludePaths:
         - vendor/*
-    checkMissingIterableValueType: false
-    checkGenericClassInNonGenericObjectType: false
     ignoreErrors:
         - '#PHPDoc tag @var#'
         - '#Call to an undefined method#'
