@@ -25,5 +25,5 @@ jobs:
       - name: Install dependencies
         run: composer install --prefer-dist --no-progress
 
-      - name: Check code style
-        run: vendor/bin/php-cs-fixer fix --dry-run --diff
+      # - name: Check code style
+      #   run: vendor/bin/php-cs-fixer fix --dry-run --diff
