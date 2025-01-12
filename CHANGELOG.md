@@ -14,6 +14,7 @@ All notable changes to `laravel-mtn-momo-ai` will be documented in this file.
 ### Added
 
 - proper PHPDoc standard comments for clearer understanding of use
+- automated AI-prompted notification feature for alerting users of transaction anomalies
 
 ## 1.0.1 - 2025-01-10
 
