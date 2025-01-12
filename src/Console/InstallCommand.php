@@ -150,9 +150,10 @@ class InstallCommand extends Command
      */
     private function createApiUser($apiUserId, $subscriptionKey)
     {
-        if (empty($subscriptionKey)) {
-            throw new MtnMomoApiException('Subscription key cannot be empty');
+        if (empty($subscriptionKey) || !preg_match('/^[a-zA-Z0-9]+$/', $subscriptionKey)) {
+            throw new MtnMomoApiException('Invalid subscription key format');
         }
+    
 
         $client = new Client();
         
