@@ -82,10 +82,10 @@ class InstallCommand extends Command
         // Generate API User UUID
         $apiUserId = Str::uuid()->toString();
 
-        $subscriptionKey = $this->secret('🔐 What is your MTN MOMO Subscription Key?');
-        while (empty($subscriptionKey)) {
-            $this->error('Subscription key is required!');
-            $subscriptionKey = $this->secret('🔐 What is your MTN MOMO Subscription Key?');
+        $subscriptionKey = trim($this->secret('🔐 What is your MTN MOMO Subscription Key?'));
+        while (empty($subscriptionKey) || !preg_match('/^[a-zA-Z0-9-]+$/', $subscriptionKey)) {
+            $this->error('Invalid subscription key format. The key should only contain letters, numbers, and hyphens.');
+            $subscriptionKey = trim($this->secret('🔐 What is your MTN MOMO Subscription Key?'));
         }
 
         $callbackHost = $this->ask('🔄 What is your callback host? (e.g., https://your-domain.com)', 'http://localhost');
@@ -150,10 +150,9 @@ class InstallCommand extends Command
      */
     private function createApiUser($apiUserId, $subscriptionKey)
     {
-        if (empty($subscriptionKey) || !preg_match('/^[a-zA-Z0-9]+$/', $subscriptionKey)) {
-            throw new MtnMomoApiException('Invalid subscription key format');
+        if (empty($subscriptionKey) || !preg_match('/^[a-zA-Z0-9-]+$/', $subscriptionKey)) {
+            throw new MtnMomoApiException('Invalid subscription key format. The key should only contain letters, numbers, and hyphens.');
         }
-    
 
         $client = new Client();
         
