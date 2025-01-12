@@ -150,18 +150,22 @@ class InstallCommand extends Command
      */
     private function createApiUser($apiUserId, $subscriptionKey)
     {
+        if (empty($subscriptionKey)) {
+            throw new MtnMomoApiException('Subscription key cannot be empty');
+        }
+
         $client = new Client();
         
         try {
             // Step 1
-            $createUserResponse = $client->post(config('mtn-momo-ai.base_url') . '/v1_0/apiuser', [
+            $createUserResponse = $client->post('https://sandbox.momodeveloper.mtn.com/v1_0/apiuser', [
                 'headers' => [
                     'X-Reference-Id' => $apiUserId,
-                    'Ocp-Apim-Subscription-Key' => $subscriptionKey,
+                    'Ocp-Apim-Subscription-Key' => trim($subscriptionKey),
                     'Content-Type' => 'application/json'
                 ],
                 'json' => [
-                    'providerCallbackHost' => config('mtn-momo-ai.callback_host', 'http://localhost')
+                    'providerCallbackHost' => 'http://localhost'
                 ]
             ]);
 
@@ -170,8 +174,7 @@ class InstallCommand extends Command
             }
 
             // Step 2
-            $createKeyResponse = $client->post(
-                config('mtn-momo-ai.base_url') . '/v1_0/apiuser/' . $apiUserId . '/apikey',
+            $createKeyResponse = $client->post('https://sandbox.momodeveloper.mtn.com/v1_0/apiuser/' . $apiUserId . '/apikey',
                 [
                     'headers' => [
                         'Ocp-Apim-Subscription-Key' => $subscriptionKey,
@@ -187,8 +190,7 @@ class InstallCommand extends Command
             $apiKey = json_decode($createKeyResponse->getBody()->getContents(), true)['apiKey'];
 
             // Step 3
-            $getUserResponse = $client->get(
-                config('mtn-momo-ai.base_url') . '/v1_0/apiuser/' . $apiUserId,
+            $getUserResponse = $client->get('https://sandbox.momodeveloper.mtn.com/v1_0/apiuser/' . $apiUserId,
                 [
                     'headers' => [
                         'Ocp-Apim-Subscription-Key' => $subscriptionKey,
@@ -204,6 +206,9 @@ class InstallCommand extends Command
             return $apiKey;
 
         } catch (\GuzzleHttp\Exception\RequestException $e) {
+            if (empty($subscriptionKey)) {
+                throw new MtnMomoApiException('Subscription key is required for API user creation');
+            }
             throw new MtnMomoApiException(
                 'API User creation failed: ' . $e->getMessage(),
                 $e->getCode(),
