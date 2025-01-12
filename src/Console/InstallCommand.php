@@ -49,6 +49,7 @@ class InstallCommand extends Command
             $this->publishConfig();
             $this->info('✅ Installation complete! Enjoy using MTN MOMO AI!');
         } else {
+            $this->addPlaceholders();
             $this->info('⏭️ Installation skipped. Run this command again when you\'re ready to configure the package.');
             return;
         }
@@ -63,7 +64,7 @@ class InstallCommand extends Command
      * - Default currency
      * - AI model configurations
      * - Alert email settings
-     *
+     * 
      * @return void
      * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
      */
@@ -80,12 +81,24 @@ class InstallCommand extends Command
 
         // Generate API User UUID
         $apiUserId = Str::uuid()->toString();
+
+        $subscriptionKey = $this->ask('🔐 What is your MTN MOMO Subscription Key?');
+        while (empty($subscriptionKey) || !preg_match('/^[a-zA-Z0-9-]+$/', $subscriptionKey)) {
+            $this->error('Invalid subscription key format. The key should only contain letters, numbers, and hyphens.');
+            $subscriptionKey = $this->ask('🔐 What is your MTN MOMO Subscription Key?');
+        }
+
+        $callbackHost = $this->ask('🔄 What is your callback host? (e.g., https://your-domain.com)', 'http://localhost');
+        while (!filter_var($callbackHost, FILTER_VALIDATE_URL)) {
+            $this->error('Please enter a valid URL!');
+            $callbackHost = $this->ask('🔄 What is your callback host?', 'http://localhost');
+        }
         
         $variables = [
-            'MTN_MOMO_SUBSCRIPTION_KEY' => $this->secret('🔐 What is your MTN MOMO Subscription Key?'),
+            'MTN_MOMO_SUBSCRIPTION_KEY' => $subscriptionKey,
             'MTN_MOMO_BASE_URL' => $this->choice('🌐 Which base URL would you like to use?', ['https://sandbox.momodeveloper.mtn.com', 'https://momodeveloper.mtn.com'], 'https://sandbox.momodeveloper.mtn.com'),
             'MTN_MOMO_ENVIRONMENT' => $this->choice('🌍 Which environment are you using?', ['sandbox', 'production'], 'sandbox'),
-            'MTN_MOMO_PROVIDER_CALLBACK_HOST' => $this->ask('🔄 What is your callback host? (e.g., https://your-domain.com)', 'http://localhost'),
+            'MTN_MOMO_PROVIDER_CALLBACK_HOST' => $callbackHost,
             'MTN_MOMO_DEFAULT_CURRENCY' => $this->choice('💰 Which currency would you like to use by default?', ['EUR' => 'Euro', 'USD' => 'US Dollar', 'GHS' => 'Ghana Cedi', 'UGX' => 'Ugandan Shilling', 'XAF' => 'Central African CFA Franc', 'XOF' => 'West African CFA Franc'], 'EUR'),
             'DEFAULT_LLM' => $this->choice('🤖 Which AI model would you like to use by default?', ['ChatGPT', 'Claude', 'Gemini'], 'ChatGPT'),
             'OPENAI_API_KEY' => $this->secret('🔑 What is your OpenAI API Key? (Leave blank if not using)'),
@@ -98,18 +111,28 @@ class InstallCommand extends Command
         $apiKey = $this->createApiUser($apiUserId, $variables['MTN_MOMO_SUBSCRIPTION_KEY']);
         $variables['MTN_MOMO_API_KEY'] = $apiKey;
 
+        // Check which variables are missing
+        $missingVariables = [];
+        foreach ($variables as $key => $value) {
+            $escapedKey = preg_quote($key, '/');
+            if (!preg_match("/^{$escapedKey}=/m", $envContents)) {
+                $missingVariables[] = $key;
+            }
+        }
+
+        // Only update existing variables or add missing ones
         foreach ($variables as $key => $value) {
             if (!empty($value)) {
-                if (preg_match("/^$key=.*/m", $envContents)) {
-                    $envContents = preg_replace("/^$key=.*/m", "$key=$value", $envContents);
-                } else {
+                if (in_array($key, $missingVariables)) {
                     $envContents .= "\n$key=$value";
+                } else {
+                    $envContents = preg_replace("/^$key=.*/m", "$key=$value", $envContents);
                 }
             }
         }
 
         File::put($envFile, $envContents);
-        $this->info('✅ Environment variables have been set successfully!');
+        $this->info('✅ Environment variables have been ' . (empty($missingVariables) ? 'updated' : 'set') . ' successfully!');
     }
 
     /**
@@ -128,18 +151,22 @@ class InstallCommand extends Command
      */
     private function createApiUser($apiUserId, $subscriptionKey)
     {
+        if (empty($subscriptionKey) || !preg_match('/^[a-zA-Z0-9-]+$/', $subscriptionKey)) {
+            throw new MtnMomoApiException('Invalid subscription key format. The key should only contain letters, numbers, and hyphens.');
+        }
+
         $client = new Client();
         
         try {
             // Step 1
-            $createUserResponse = $client->post(config('mtn-momo-ai.base_url') . '/v1_0/apiuser', [
+            $createUserResponse = $client->post('https://sandbox.momodeveloper.mtn.com/v1_0/apiuser', [
                 'headers' => [
                     'X-Reference-Id' => $apiUserId,
-                    'Ocp-Apim-Subscription-Key' => $subscriptionKey,
+                    'Ocp-Apim-Subscription-Key' => trim($subscriptionKey),
                     'Content-Type' => 'application/json'
                 ],
                 'json' => [
-                    'providerCallbackHost' => config('mtn-momo-ai.callback_host', 'http://localhost')
+                    'providerCallbackHost' => 'http://localhost'
                 ]
             ]);
 
@@ -148,8 +175,7 @@ class InstallCommand extends Command
             }
 
             // Step 2
-            $createKeyResponse = $client->post(
-                config('mtn-momo-ai.base_url') . '/v1_0/apiuser/' . $apiUserId . '/apikey',
+            $createKeyResponse = $client->post('https://sandbox.momodeveloper.mtn.com/v1_0/apiuser/' . $apiUserId . '/apikey',
                 [
                     'headers' => [
                         'Ocp-Apim-Subscription-Key' => $subscriptionKey,
@@ -165,8 +191,7 @@ class InstallCommand extends Command
             $apiKey = json_decode($createKeyResponse->getBody()->getContents(), true)['apiKey'];
 
             // Step 3
-            $getUserResponse = $client->get(
-                config('mtn-momo-ai.base_url') . '/v1_0/apiuser/' . $apiUserId,
+            $getUserResponse = $client->get('https://sandbox.momodeveloper.mtn.com/v1_0/apiuser/' . $apiUserId,
                 [
                     'headers' => [
                         'Ocp-Apim-Subscription-Key' => $subscriptionKey,
@@ -182,6 +207,9 @@ class InstallCommand extends Command
             return $apiKey;
 
         } catch (\GuzzleHttp\Exception\RequestException $e) {
+            if (empty($subscriptionKey)) {
+                throw new MtnMomoApiException('Subscription key is required for API user creation');
+            }
             throw new MtnMomoApiException(
                 'API User creation failed: ' . $e->getMessage(),
                 $e->getCode(),
@@ -205,5 +233,52 @@ class InstallCommand extends Command
             '--tag' => 'config'
         ]);
         $this->info('✨ Configuration file published successfully!');
+    }
+
+    /**
+     * Add environment variable placeholders to .env file.
+     * 
+     * Adds all required environment variables as empty placeholders with
+     * helpful comments explaining how to obtain or set each value.
+     * 
+     * @return void
+     * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
+     */
+    private function addPlaceholders()
+    {
+        $envFile = base_path('.env');
+        $envContents = File::get($envFile);
+        
+        $placeholders = [
+            'MTN_MOMO_SUBSCRIPTION_KEY=' => '# Get this from your MTN MOMO Developer Portal subscription',
+            'MTN_MOMO_BASE_URL=https://sandbox.momodeveloper.mtn.com' => '# Use sandbox for testing, switch to production URL (https://momodeveloper.mtn.com) later',
+            'MTN_MOMO_ENVIRONMENT=sandbox' => '# Use sandbox for testing, production for live',
+            'MTN_MOMO_PROVIDER_CALLBACK_HOST=http://localhost' => '# Your application callback URL. For information, see https://momodeveloper.mtn.com/api-documentation/callback',
+            'MTN_MOMO_DEFAULT_CURRENCY=EUR' => '# Default currency for transactions (EUR, USD, GHS, etc). Use EUR for sandbox testing',
+            'DEFAULT_LLM=ChatGPT' => '# Choose between ChatGPT, Claude, or Gemini',
+            'OPENAI_API_KEY=' => '# Get this from OpenAI dashboard if using ChatGPT',
+            'ANTHROPIC_API_KEY=' => '# Get this from Anthropic dashboard if using Claude',
+            'GEMINI_API_KEY=' => '# Get this from Google Cloud Console if using Gemini',
+            'MTN_MOMO_ALERT_EMAIL=' => '# Optional: Email for receiving alerts',
+            'MTN_MOMO_API_USER=' => '# Auto-generated during setup. For manual input, see https://momodeveloper.mtn.com/api-documentation/api-description',
+            'MTN_MOMO_API_KEY=' => '# Auto-generated during setup. For manual input, see https://momodeveloper.mtn.com/api-documentation/api-description'
+        ];
+
+        foreach ($placeholders as $key => $comment) {
+            $variableName = substr($key, 0, strpos($key, '='));
+            $pattern = "/^#.*\n{$variableName}=.*$/m";
+            if (preg_match($pattern, $envContents)) {
+                // Variable exists - remove old entry (including comment)
+                $envContents = preg_replace($pattern, '', $envContents);
+            }
+            // Add new entry with comment
+            $envContents .= "\n" . $comment . "\n" . $key;
+        }
+    
+        // Clean up any double blank lines
+        $envContents = preg_replace("/\n\n\n+/", "\n\n", $envContents);
+        
+        File::put($envFile, $envContents);
+        $this->info('✨ Environment variable placeholders have been added successfully!');
     }
 }
