@@ -113,9 +113,10 @@ class InstallCommand extends Command
 
         // Check which variables are missing
         $missingVariables = [];
-        foreach ($variables as $variable) {
-            if (!preg_match("/^{$variable}=/m", $envContents)) {
-                $missingVariables[] = $variable;
+        foreach ($variables as $key => $value) {
+            $escapedKey = preg_quote($key, '/');
+            if (!preg_match("/^{$escapedKey}=/m", $envContents)) {
+                $missingVariables[] = $key;
             }
         }
 
