@@ -27,8 +27,8 @@
         "illuminate/support": "^9.0|^10.0|^11.0",
         "laravel/framework": "^9.46.0|^10.34.2|^11.23.5",
         "guzzlehttp/guzzle": "^7.0",
-        "openai-php/client": "^0.5.0",
         "mozex/anthropic-laravel": "^1.1",
+        "openai-php/client": "^0.10.3",
         "google-gemini-php/laravel": "^1.0"
     },
     "require-dev": {
