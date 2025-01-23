@@ -133,6 +133,15 @@ return [
         'model' => env('GEMINI_MODEL', 'gemini-pro'),
     ],
 
+    /**
+     * DeepSeek Configuration
+     */
+    'deepseek' => [
+        'api_key' => env('DEEPSEEK_API_KEY'),
+        'model' => env('DEEPSEEK_MODEL', 'deepseek-chat'),
+    ],
+
+
     /*
     |--------------------------------------------------------------------------
     | AI Feature Configuration

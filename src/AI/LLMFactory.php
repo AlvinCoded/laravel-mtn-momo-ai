@@ -5,6 +5,7 @@ namespace AlvinCoded\MtnMomoAi\AI;
 use AlvinCoded\MtnMomoAi\AI\Models\ChatGPT;
 use AlvinCoded\MtnMomoAi\AI\Models\Claude;
 use AlvinCoded\MtnMomoAi\AI\Models\Gemini;
+use AlvinCoded\MtnMomoAi\AI\Models\DeepSeek;
 use AlvinCoded\MtnMomoAi\AI\Interfaces\LLMInterface;
 use InvalidArgumentException;
 
@@ -63,6 +64,8 @@ class LLMFactory
                 return new Claude($this->config['claude']);
             case 'Gemini':
                 return new Gemini($this->config['gemini']);
+            case 'DeepSeek':
+                return new DeepSeek($this->config['deepseek']);
             default:
                 throw new InvalidArgumentException("Unsupported LLM model: {$model}");
         }

@@ -1,12 +1,16 @@
-# Laravel MTN MOMO AI 
+<h1 align='center'> Laravel MTN MOMO AI </h1>
+
+<div align="center">
 
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/alvincoded/laravel-mtn-momo-ai.svg?style=flat-square)](https://packagist.org/packages/alvincoded/laravel-mtn-momo-ai)
-[![Tests](https://github.com/alvincoded/laravel-mtn-momo-ai/actions/workflows/tests.yml/badge.svg)](https://github.com/alvincoded/laravel-mtn-momo-ai/actions/workflows/tests.yml)
 [![Code Style](https://github.com/alvincoded/laravel-mtn-momo-ai/actions/workflows/php-cs-fixer.yml/badge.svg)](https://github.com/alvincoded/laravel-mtn-momo-ai/actions/workflows/php-cs-fixer.yml)
 [![Security](https://github.com/alvincoded/laravel-mtn-momo-ai/actions/workflows/security.yml/badge.svg)](https://github.com/alvincoded/laravel-mtn-momo-ai/actions/workflows/security.yml)
+<!-- [![Tests](https://github.com/alvincoded/laravel-mtn-momo-ai/actions/workflows/tests.yml/badge.svg)](https://github.com/alvincoded/laravel-mtn-momo-ai/actions/workflows/tests.yml) -->
 <!-- [![codecov](https://codecov.io/gh/alvincoded/laravel-mtn-momo-ai/graph/badge.svg?token=D0X6XJZCQR)](https://codecov.io/gh/alvincoded/laravel-mtn-momo-ai) -->
 <!-- [![Total Downloads](https://img.shields.io/packagist/dt/alvincoded/laravel-mtn-momo-ai.svg?style=flat-square)](https://packagist.org/packages/alvincoded/laravel-mtn-momo-ai) -->
 <!-- [![Sponsor](https://img.shields.io/static/v1?label=Sponsor&message=%E2%9D%A4&logo=GitHub&color=ff69b4)](https://github.com/sponsors/AlvinCoded) -->
+
+</div>
 
 A powerful Laravel package that integrates [MTN Mobile Money API](https://momodeveloper.mtn.com/) with AI capabilities, providing intelligent transaction analysis, fraud detection, and more!
 
@@ -45,6 +49,7 @@ You'll need at least one of these API keys:
 - OpenAI API Key (for ChatGPT)
 - Anthropic API Key (for Claude)
 - Google Gemini API Key (for Gemini)
+- Deepseek API Key (for Deepseek)
 
 ### System Requirements
 - PHP 8.1 or higher
@@ -80,13 +85,6 @@ This command will guide you through the setup process, including publishing the 
 
 The package configuration file will be published to `config/mtn-momo-ai.php`. You can modify the settings there or use environment variables in your `.env` file.
 
-Key configurations include:
-
-- MTN MOMO API credentials
-- AI model settings (ChatGPT, Claude, Gemini)
-- Default LLM selection
-- Alerting settings
-
 ### Environment Variables
 
 ```bash
@@ -103,6 +101,7 @@ MTN_MOMO_DEFAULT_CURRENCY=EUR
 OPENAI_API_KEY=your_openai_key
 ANTHROPIC_API_KEY=your_anthropic_key
 GEMINI_API_KEY=your_gemini_key
+DEEPSEEK_API_KEY=your_deepseek_key
 
 # Default LLM Configuration
 DEFAULT_LLM=ChatGPT

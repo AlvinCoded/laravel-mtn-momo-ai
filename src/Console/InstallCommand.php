@@ -104,6 +104,7 @@ class InstallCommand extends Command
             'OPENAI_API_KEY' => $this->secret('🔑 What is your OpenAI API Key? (Leave blank if not using)'),
             'ANTHROPIC_API_KEY' => $this->secret('🔑 What is your Anthropic API Key? (Leave blank if not using)'),
             'GEMINI_API_KEY' => $this->secret('🔑 What is your Gemini API Key? (Leave blank if not using)'),
+            'DEEPSEEK_API_KEY' => $this->secret('🔑 What is your DeepSeek API Key? (Leave blank if not using)'),
             'MTN_MOMO_ALERT_EMAIL' => $this->ask('📧 What email should receive alerts?'),
             'MTN_MOMO_API_USER' => $apiUserId,
         ];
@@ -259,6 +260,7 @@ class InstallCommand extends Command
             'OPENAI_API_KEY=' => '# Get this from OpenAI dashboard if using ChatGPT',
             'ANTHROPIC_API_KEY=' => '# Get this from Anthropic dashboard if using Claude',
             'GEMINI_API_KEY=' => '# Get this from Google Cloud Console if using Gemini',
+            'DEEPSEEK_API_KEY=' => '# Get this from DeepSeek dashboard if using DeepSeek',
             'MTN_MOMO_ALERT_EMAIL=' => '# Optional: Email for receiving alerts',
             'MTN_MOMO_API_USER=' => '# Auto-generated during setup. For manual input, see https://momodeveloper.mtn.com/api-documentation/api-description',
             'MTN_MOMO_API_KEY=' => '# Auto-generated during setup. For manual input, see https://momodeveloper.mtn.com/api-documentation/api-description'

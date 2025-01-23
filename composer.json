@@ -23,13 +23,14 @@
         }
     ],
     "require": {
-        "php": "^8.1|^8.2",
+        "php": ">=8.1",
+        "deepseek-php/deepseek-php-client": "^1.0",
+        "google-gemini-php/laravel": "^1.0",
+        "guzzlehttp/guzzle": "^7.9",
         "illuminate/support": "^9.0|^10.0|^11.0",
         "laravel/framework": "^9.46.0|^10.34.2|^11.23.5",
-        "guzzlehttp/guzzle": "^7.9",
         "mozex/anthropic-laravel": "^1.1",
-        "openai-php/client": "^0.10.3",
-        "google-gemini-php/laravel": "^1.0"
+        "openai-php/client": "^0.10.3"
     },
     "require-dev": {
         "mockery/mockery": "^1.6",
@@ -39,7 +40,6 @@
         "phpstan/phpstan": "^1.10",
         "nunomaduro/larastan": "^2.0",
         "symfony/var-dumper": "^6.0|^7.0",
-        "vimeo/psalm": "^5.26",
         "rector/rector": "^0.19"
     },
     "autoload": {
