@@ -11,7 +11,7 @@ use DeepseekPhp\DeepseekClient;
  * DeepSeek AI Model Implementation for MTN MOMO API
  * 
  * This class implements the LLMInterface to provide AI-powered analysis and insights
- * for MTN Mobile Money transactions using OpenAI's GPT models.
+ * for MTN Mobile Money transactions using Deepseek's models.
  */
 class DeepSeek implements LLMInterface
 {
