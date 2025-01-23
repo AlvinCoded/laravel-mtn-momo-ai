@@ -78,8 +78,6 @@ class InstallCommand extends Command
 
         $envFile = base_path('.env');
         $envContents = File::get($envFile);
-
-        // Generate API User UUID
         $apiUserId = Str::uuid()->toString();
 
         $subscriptionKey = $this->ask('🔐 What is your MTN MOMO Subscription Key?');
@@ -100,7 +98,7 @@ class InstallCommand extends Command
             'MTN_MOMO_ENVIRONMENT' => $this->choice('🌍 Which environment are you using?', ['sandbox', 'production'], 'sandbox'),
             'MTN_MOMO_PROVIDER_CALLBACK_HOST' => $callbackHost,
             'MTN_MOMO_DEFAULT_CURRENCY' => $this->choice('💰 Which currency would you like to use by default?', ['EUR' => 'Euro', 'USD' => 'US Dollar', 'GHS' => 'Ghana Cedi', 'UGX' => 'Ugandan Shilling', 'XAF' => 'Central African CFA Franc', 'XOF' => 'West African CFA Franc'], 'EUR'),
-            'DEFAULT_LLM' => $this->choice('🤖 Which AI model would you like to use by default?', ['ChatGPT', 'Claude', 'Gemini'], 'ChatGPT'),
+            'DEFAULT_LLM' => $this->choice('🤖 Which AI model would you like to use by default?', ['ChatGPT', 'Claude', 'Gemini', 'DeepSeek'], 'ChatGPT'),
             'OPENAI_API_KEY' => $this->secret('🔑 What is your OpenAI API Key? (Leave blank if not using)'),
             'ANTHROPIC_API_KEY' => $this->secret('🔑 What is your Anthropic API Key? (Leave blank if not using)'),
             'GEMINI_API_KEY' => $this->secret('🔑 What is your Gemini API Key? (Leave blank if not using)'),
@@ -112,7 +110,6 @@ class InstallCommand extends Command
         $apiKey = $this->createApiUser($apiUserId, $variables['MTN_MOMO_SUBSCRIPTION_KEY']);
         $variables['MTN_MOMO_API_KEY'] = $apiKey;
 
-        // Check which variables are missing
         $missingVariables = [];
         foreach ($variables as $key => $value) {
             $escapedKey = preg_quote($key, '/');
@@ -121,7 +118,6 @@ class InstallCommand extends Command
             }
         }
 
-        // Only update existing variables or add missing ones
         foreach ($variables as $key => $value) {
             if (!empty($value)) {
                 if (in_array($key, $missingVariables)) {
@@ -159,7 +155,6 @@ class InstallCommand extends Command
         $client = new Client();
         
         try {
-            // Step 1
             $createUserResponse = $client->post('https://sandbox.momodeveloper.mtn.com/v1_0/apiuser', [
                 'headers' => [
                     'X-Reference-Id' => $apiUserId,
@@ -175,7 +170,6 @@ class InstallCommand extends Command
                 throw new MtnMomoApiException('Failed to create API user');
             }
 
-            // Step 2
             $createKeyResponse = $client->post('https://sandbox.momodeveloper.mtn.com/v1_0/apiuser/' . $apiUserId . '/apikey',
                 [
                     'headers' => [
@@ -191,7 +185,6 @@ class InstallCommand extends Command
 
             $apiKey = json_decode($createKeyResponse->getBody()->getContents(), true)['apiKey'];
 
-            // Step 3
             $getUserResponse = $client->get('https://sandbox.momodeveloper.mtn.com/v1_0/apiuser/' . $apiUserId,
                 [
                     'headers' => [
@@ -270,14 +263,11 @@ class InstallCommand extends Command
             $variableName = substr($key, 0, strpos($key, '='));
             $pattern = "/^#.*\n{$variableName}=.*$/m";
             if (preg_match($pattern, $envContents)) {
-                // Variable exists - remove old entry (including comment)
                 $envContents = preg_replace($pattern, '', $envContents);
             }
-            // Add new entry with comment
             $envContents .= "\n" . $comment . "\n" . $key;
         }
-    
-        // Clean up any double blank lines
+
         $envContents = preg_replace("/\n\n\n+/", "\n\n", $envContents);
         
         File::put($envFile, $envContents);

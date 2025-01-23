@@ -50,8 +50,9 @@ class LLMFactory
      * - ChatGPT: OpenAI's GPT model for general analysis and text generation
      * - Claude: Anthropic's Claude model for complex reasoning
      * - Gemini: Google's Gemini model for natural language processing
+     * - Deepseek: Deepseek model for natural language processing
      *
-     * @param string $model The name of the LLM model to create ('ChatGPT', 'Claude', or 'Gemini')
+     * @param string $model The name of the LLM model to create ('ChatGPT', 'Claude', 'Gemini' or 'Deepseek')
      * @return LLMInterface An instance of the requested LLM model
      * @throws InvalidArgumentException If an unsupported model is requested
      */

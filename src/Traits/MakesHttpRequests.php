@@ -94,7 +94,6 @@ trait MakesHttpRequests
 
         $token = $this->requestNewAccessToken();
 
-        // Cache for 59 minutes (3540 seconds) to ensure token refresh before expiration
         Cache::put($cacheKey, $token, 3540);
 
         return $token;

@@ -214,8 +214,6 @@ class MtnMomoAi
         return $this->formatErrorResponse($explanation);
     }
 
-    // Collection API methods
-
     /**
      * Request to pay via Collections API
      *
@@ -265,8 +263,6 @@ class MtnMomoAi
         return $this->collections->getAccountHolder($accountHolderId, $accountHolderIdType);
     }
 
-    // Disbursement API methods
-
     /**
      * Transfer funds via Disbursements API
      *
@@ -303,8 +299,6 @@ class MtnMomoAi
     {
         return $this->disbursements->getAccountBalance();
     }
-
-    // Remittance API methods
 
     /**
      * Send remittance via Remittance API
