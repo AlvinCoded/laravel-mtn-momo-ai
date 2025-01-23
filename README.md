@@ -277,7 +277,8 @@ Please see [CHANGELOG](CHANGELOG.md) for more information on what has changed re
 ## Credits 👏
 - OpenAI PHP by [Nuno Maduro](https://github.com/openai-php/laravel)
 - Anthropic Laravel by [Mozex](https://github.com/mozex/anthropic-laravel)
-- **Gemini PHP** for Laravel by [Fatih AYDIN](https://github.com/google-gemini-php/laravel)
+- Gemini PHP for Laravel by [Fatih AYDIN](https://github.com/google-gemini-php/laravel)
+- DeepSeek PHP Client by [Omar AlAlwi](https://github.com/deepseek-php/deepseek-php-client)
 
 ## License 📄
 
