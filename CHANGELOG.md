@@ -2,8 +2,6 @@
 
 All notable changes to `laravel-mtn-momo-ai` will be documented in this file.
 
-# v1.2.0 - 2025-01-23
-
 ## v1.2.0 - 2025-01-23
 
 ### Added
@@ -21,22 +19,6 @@ All notable changes to `laravel-mtn-momo-ai` will be documented in this file.
 
 - Requires DeepSeek PHP client: `"deepseek-php/deepseek-php-client": "^1.0"`
 - Update your .env file with `DEEPSEEK_API_KEY` for full functionality
-
-## New Features
-
-- Added support for DeepSeek AI model alongside existing ChatGPT, Claude, and Gemini models
-- Implemented DeepSeek class with full LLMInterface compatibility
-- Updated configuration to include DeepSeek API settings
-
-## Changes
-
-- Modified LLMFactory to create DeepSeek instances
-- Enhanced InstallCommand to prompt for DeepSeek API key during setup
-
-## Developer Notes
-
-- Requires DeepSeek PHP client: "deepseek-php/deepseek-php-client": "^1.0"
-- Update your .env file with DEEPSEEK_API_KEY for full functionality
 
 ## v1.1.0 - 2025-01-12
 
